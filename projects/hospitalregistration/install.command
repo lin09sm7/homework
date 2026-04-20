@@ -14,7 +14,7 @@ echo ""
 
 echo "[2/2] 安裝前端套件 (frontend)..."
 cd ../frontend
-npm install
+npm install --legacy-peer-deps
 echo "✓ 前端安裝完成"
 echo ""
 

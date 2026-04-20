@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>安康綜合醫院 門診掛號系統 - 操作手冊</title>
+<style>
+  body { font-family: "Microsoft JhengHei", "PingFang TC", sans-serif; margin: 40px 60px; color: #333; font-size: 14px; line-height: 1.8; }
+  h1 { text-align: center; font-size: 24px; margin-bottom: 5px; }
+  h2 { text-align: center; font-size: 16px; font-weight: normal; color: #666; margin-top: 0; }
+  h3 { font-size: 18px; border-bottom: 2px solid #4A7C59; padding-bottom: 6px; margin-top: 40px; color: #2D5A3D; }
+  h4 { font-size: 16px; margin-top: 25px; color: #4A7C59; }
+  table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+  th, td { border: 1px solid #999; padding: 8px 12px; text-align: left; vertical-align: top; }
+  th { background-color: #4A7C59; color: white; font-weight: bold; }
+  tr:nth-child(even) { background-color: #f5f5f5; }
+  .toc { margin: 20px 0; }
+  .toc a { text-decoration: none; color: #333; }
+  .toc li { margin: 5px 0; }
+  .note { background: #fffde7; border-left: 4px solid #f9a825; padding: 10px 15px; margin: 15px 0; }
+  .tip { background: #e8f5e9; border-left: 4px solid #4A7C59; padding: 10px 15px; margin: 15px 0; }
+  .warning { background: #fce4ec; border-left: 4px solid #c62828; padding: 10px 15px; margin: 15px 0; }
+  .page-break { page-break-before: always; }
+  .footer { text-align: center; color: #999; font-size: 12px; margin-top: 60px; border-top: 1px solid #ccc; padding-top: 10px; }
+  .step-box { background: #f0f7f2; border-left: 4px solid #4A7C59; padding: 12px 16px; margin: 10px 0; border-radius: 0 6px 6px 0; }
+  .step-num { display: inline-block; background: #4A7C59; color: white; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 50%; font-weight: bold; margin-right: 8px; font-size: 14px; }
+  .arrow { text-align: center; font-size: 20px; color: #4A7C59; margin: 5px 0; }
+  .section-box { background: #f8faf8; border: 1px solid #ccc; border-radius: 6px; padding: 20px 25px; margin: 20px 0; }
+  .btn { display: inline-block; padding: 4px 14px; border-radius: 8px; color: white; font-size: 13px; font-weight: 600; }
+  .btn-green { background: linear-gradient(180deg, #4A5D43, #3D4E38); }
+  .btn-mid { background: linear-gradient(180deg, #8E9B87, #7C8A75); }
+  .btn-gray { background: linear-gradient(180deg, #A0A8A5, #8E9691); }
+  code { background: #eef; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+  .field-label { display: inline-block; background: #e8f0e8; padding: 1px 8px; border-radius: 4px; font-weight: bold; color: #2D5A3D; font-size: 13px; }
+  .screenshot { text-align: center; margin: 20px 0; }
+  .screenshot img { max-width: 100%; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  ol.steps > li { margin-bottom: 12px; }
+  .qa-q { font-weight: bold; color: #2D5A3D; margin-top: 15px; }
+  .qa-a { margin-left: 20px; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<h1>安康綜合醫院 門診掛號系統</h1>
+<h2>操作手冊</h2>
+
+<hr>
+
+<!-- 目錄 -->
+<h3>目錄</h3>
+<div class="toc">
+<ol>
+  <li><a href="#intro">系統簡介</a></li>
+  <li><a href="#start">系統啟動與登入</a></li>
+  <li><a href="#layout">畫面說明</a></li>
+  <li><a href="#reg-flow">掛號作業流程</a></li>
+  <li><a href="#step1">步驟一：輸入病歷號碼</a></li>
+  <li><a href="#step2">步驟二：填寫／確認病患資訊</a></li>
+  <li><a href="#step3">步驟三：選擇門診預約資訊</a></li>
+  <li><a href="#step4">步驟四：確認掛號</a></li>
+  <li><a href="#step5">步驟五：列印掛號單</a></li>
+  <li><a href="#step6">步驟六：清除畫面（準備下一位）</a></li>
+  <li><a href="#old-patient">舊病患掛號操作範例</a></li>
+  <li><a href="#new-patient">新病患掛號操作範例</a></li>
+  <li><a href="#buttons">操作按鈕說明</a></li>
+  <li><a href="#validation">驗證機制說明</a></li>
+  <li><a href="#faq">常見問題（FAQ）</a></li>
+  <li><a href="#shortcuts">操作小技巧</a></li>
+</ol>
+</div>
+
+<!-- ============================== 系統簡介 ============================== -->
+
+<h3 id="intro">一、系統簡介</h3>
+
+<div class="section-box">
+<table style="border: none; width: auto;">
+  <tr style="background: none;"><td style="border: none; font-weight: bold; color: #4A7C59; padding: 4px 20px 4px 0;">系統名稱</td><td style="border: none; padding: 4px 0;">安康綜合醫院 門診掛號系統 v2.0</td></tr>
+  <tr style="background: none;"><td style="border: none; font-weight: bold; color: #4A7C59; padding: 4px 20px 4px 0;">系統用途</td><td style="border: none; padding: 4px 0;">提供掛號櫃台人員進行門診掛號作業</td></tr>
+  <tr style="background: none;"><td style="border: none; font-weight: bold; color: #4A7C59; padding: 4px 20px 4px 0;">操作方式</td><td style="border: none; padding: 4px 0;">單一畫面完成所有掛號流程，無需切換頁面</td></tr>
+  <tr style="background: none;"><td style="border: none; font-weight: bold; color: #4A7C59; padding: 4px 20px 4px 0;">使用環境</td><td style="border: none; padding: 4px 0;">網頁瀏覽器（建議使用 Chrome 或 Edge）</td></tr>
+</table>
+</div>
+
+<p>本系統為單頁式掛號應用程式，掛號人員只需在同一畫面上依序完成病患資訊確認與門診預約，即可完成掛號並取得掛號號碼。系統具備<strong>自動帶入舊病患資料</strong>、<strong>身分證即時驗證</strong>、<strong>年齡自動計算</strong>等智慧功能，大幅減少手動輸入的時間與錯誤。</p>
+
+<!-- ============================== 系統啟動 ============================== -->
+
+<h3 id="start">二、系統啟動與登入</h3>
+
+<h4>啟動方式</h4>
+<ol class="steps">
+  <li>開啟專案資料夾，雙擊執行 <code>start.command</code> 檔案。</li>
+  <li>系統將自動啟動後端伺服器與前端應用程式。</li>
+  <li>瀏覽器將自動開啟掛號系統畫面（預設網址：<code>http://localhost:5173</code>）。</li>
+  <li>若瀏覽器未自動開啟，請手動在瀏覽器網址列輸入上述網址。</li>
+</ol>
+
+<div class="tip">
+<strong>提示：</strong>首次安裝時，請先雙擊 <code>install.command</code> 安裝所需程式套件，安裝完成後再執行 <code>start.command</code>。
+</div>
+
+<!-- ============================== 畫面說明 ============================== -->
+
+<h3 id="layout" class="page-break">三、畫面說明</h3>
+
+<p>系統畫面由上而下分為四大區塊：</p>
+
+<div class="screenshot">
+  <img src="../frontend/src/assets/screenshot.png" alt="系統畫面截圖" onerror="this.style.display='none'">
+</div>
+
+<table>
+  <tr><th>區塊</th><th>位置</th><th>說明</th></tr>
+  <tr>
+    <td><strong>標題列</strong></td>
+    <td>最上方（綠色）</td>
+    <td>顯示醫院名稱「安康綜合醫院」</td>
+  </tr>
+  <tr>
+    <td><strong>病患資訊</strong></td>
+    <td>中上方（白色）</td>
+    <td>輸入與顯示病患個人資料，包含三列欄位：<br>
+      第一列：病歷號碼、姓名、性別、初複診<br>
+      第二列：生日、年齡、電話<br>
+      第三列：縣市、區域、詳細地址
+    </td>
+  </tr>
+  <tr>
+    <td><strong>門診預約</strong></td>
+    <td>中下方（淡灰色）</td>
+    <td>選擇掛號日期、掛號時段、科別、醫師，下方顯示掛號號碼</td>
+  </tr>
+  <tr>
+    <td><strong>操作功能列</strong></td>
+    <td>最下方（綠色）</td>
+    <td>四個操作按鈕：確認掛號、列印掛號單、清除畫面、結束離開</td>
+  </tr>
+</table>
+
+<!-- ============================== 掛號作業流程 ============================== -->
+
+<h3 id="reg-flow" class="page-break">四、掛號作業流程</h3>
+
+<p>完整的掛號作業流程如下圖所示：</p>
+
+<div class="step-box"><span class="step-num">1</span> <strong>輸入病歷號碼</strong>（台灣身分證字號 10 碼）</div>
+<div class="arrow">↓</div>
+<div class="step-box"><span class="step-num">2</span> <strong>確認／填寫病患資訊</strong>（舊病患自動帶入，新病患手動填寫）</div>
+<div class="arrow">↓</div>
+<div class="step-box"><span class="step-num">3</span> <strong>選擇門診預約資訊</strong>（掛號日期 → 掛號時段 → 科別 → 醫師）</div>
+<div class="arrow">↓</div>
+<div class="step-box"><span class="step-num">4</span> <strong>點擊「確認掛號」</strong>（系統自動產生掛號號碼）</div>
+<div class="arrow">↓</div>
+<div class="step-box"><span class="step-num">5</span> <strong>列印掛號單</strong>（選擇性操作）</div>
+<div class="arrow">↓</div>
+<div class="step-box"><span class="step-num">6</span> <strong>點擊「清除畫面」</strong>（準備下一位病患掛號）</div>
+
+<!-- ============================== 步驟一 ============================== -->
+
+<h3 id="step1" class="page-break">五、步驟一：輸入病歷號碼</h3>
+
+<p>在 <span class="field-label">病歷號碼</span> 欄位中輸入病患的<strong>台灣身分證字號</strong>（共 10 碼：1 碼英文字母 + 9 碼數字）。</p>
+
+<h4>操作說明</h4>
+<ol class="steps">
+  <li>點擊「病歷號碼」輸入框（顯示灰色提示文字 <code>A123456789</code>）。</li>
+  <li>輸入病患的身分證字號，例如：<code>A123456789</code>。</li>
+  <li>系統會<strong>自動將英文字母轉為大寫</strong>，無需手動切換。</li>
+  <li>輸入過程中，系統會<strong>即時驗證格式</strong>，若有誤會立即在下方顯示紅色提示訊息。</li>
+  <li>輸入完整且合法的 10 碼後，系統會<strong>自動查詢</strong>該病患是否已在資料庫中。</li>
+</ol>
+
+<h4>系統自動判斷</h4>
+<table>
+  <tr><th>查詢結果</th><th>系統行為</th></tr>
+  <tr>
+    <td><strong>查到既有病患（舊病患）</strong></td>
+    <td>自動帶入所有病患資料（姓名、性別、生日、年齡、電話、地址等），並將初複診設為「複診」</td>
+  </tr>
+  <tr>
+    <td><strong>查無此病患（新病患）</strong></td>
+    <td>所有病患欄位維持空白，初複診自動設為「初診」，由掛號人員手動填寫</td>
+  </tr>
+</table>
+
+<h4>驗證提示訊息</h4>
+<table>
+  <tr><th>輸入情況</th><th>提示訊息</th></tr>
+  <tr><td>第一碼輸入非英文字母</td><td>「第一碼必須為英文字母」</td></tr>
+  <tr><td>第二碼之後輸入非數字</td><td>「第二碼起必須為數字」</td></tr>
+  <tr><td>輸入不足 10 碼</td><td>「還需輸入 N 碼」（N 為剩餘碼數）</td></tr>
+  <tr><td>10 碼但檢查碼不正確</td><td>「身分證字號檢查碼錯誤」</td></tr>
+  <tr><td>驗證通過</td><td>（無提示，正常顯示）</td></tr>
+</table>
+
+<div class="warning">
+<strong>注意：</strong>若身分證字號輸入有誤（出現紅色提示），系統將無法自動查詢病患資料，也無法完成掛號。請確認輸入正確的身分證字號。
+</div>
+
+<!-- ============================== 步驟二 ============================== -->
+
+<h3 id="step2" class="page-break">六、步驟二：填寫／確認病患資訊</h3>
+
+<p>「病患資訊」區塊包含以下欄位，請逐一填寫或確認：</p>
+
+<h4>第一列欄位</h4>
+<table>
+  <tr><th>欄位</th><th>必填</th><th>操作說明</th></tr>
+  <tr>
+    <td><span class="field-label">病歷號碼</span></td>
+    <td>是</td>
+    <td>已在步驟一輸入</td>
+  </tr>
+  <tr>
+    <td><span class="field-label">姓名</span></td>
+    <td>是</td>
+    <td>輸入病患中文姓名。舊病患會自動帶入</td>
+  </tr>
+  <tr>
+    <td><span class="field-label">性別</span></td>
+    <td>否</td>
+    <td>從下拉選單選擇「男」或「女」。舊病患會自動帶入</td>
+  </tr>
+  <tr>
+    <td><span class="field-label">初複診</span></td>
+    <td>否</td>
+    <td>從下拉選單選擇「初診」或「複診」。系統會自動判斷：舊病患自動設為「複診」，新病患自動設為「初診」。如需更改可手動調整</td>
+  </tr>
+</table>
+
+<h4>第二列欄位</h4>
+<table>
+  <tr><th>欄位</th><th>必填</th><th>操作說明</th></tr>
+  <tr>
+    <td><span class="field-label">生日</span></td>
+    <td>否</td>
+    <td>點擊後出現日期選擇器，選擇病患出生日期。選擇後年齡會自動計算</td>
+  </tr>
+  <tr>
+    <td><span class="field-label">年齡</span></td>
+    <td>否</td>
+    <td><strong>自動計算</strong>，無需手動輸入。系統根據生日自動計算足歲年齡</td>
+  </tr>
+  <tr>
+    <td><span class="field-label">電話</span></td>
+    <td>否</td>
+    <td>輸入病患聯絡電話</td>
+  </tr>
+</table>
+
+<h4>第三列欄位（地址）</h4>
+<table>
+  <tr><th>欄位</th><th>必填</th><th>操作說明</th></tr>
+  <tr>
+    <td><span class="field-label">縣市</span></td>
+    <td>否</td>
+    <td>從下拉選單選擇縣市（全台灣 22 縣市）。選擇後「區域」選單會自動更新</td>
+  </tr>
+  <tr>
+    <td><span class="field-label">區域</span></td>
+    <td>否</td>
+    <td>從下拉選單選擇區域。選項會依所選縣市自動載入對應的鄉鎮市區</td>
+  </tr>
+  <tr>
+    <td><span class="field-label">詳細地址</span></td>
+    <td>否</td>
+    <td>輸入門牌號碼等詳細地址</td>
+  </tr>
+</table>
+
+<div class="tip">
+<strong>提示：</strong>「縣市」與「區域」為<strong>級聯選單</strong>，請先選擇縣市，區域選單才會出現對應選項。若更換縣市，區域會自動清空並重新載入。
+</div>
+
+<!-- ============================== 步驟三 ============================== -->
+
+<h3 id="step3" class="page-break">七、步驟三：選擇門診預約資訊</h3>
+
+<p>在「門診預約」區塊中，依序選擇以下欄位：</p>
+
+<table>
+  <tr><th>欄位</th><th>必填</th><th>操作說明</th></tr>
+  <tr>
+    <td><span class="field-label">掛號日期</span></td>
+    <td>是</td>
+    <td>系統預設為<strong>今天日期</strong>。如需掛號其他日期，點擊日期選擇器手動修改</td>
+  </tr>
+  <tr>
+    <td><span class="field-label">掛號時段</span></td>
+    <td>是</td>
+    <td>從下拉選單選擇「上午」或「下午」</td>
+  </tr>
+  <tr>
+    <td><span class="field-label">科別</span></td>
+    <td>是</td>
+    <td>從下拉選單選擇門診科別（共 8 科：內科、外科、小兒科、婦產科、耳鼻喉科、皮膚科、眼科、家醫科）。選擇後「醫師」選單會自動更新</td>
+  </tr>
+  <tr>
+    <td><span class="field-label">醫師</span></td>
+    <td>是</td>
+    <td>從下拉選單選擇看診醫師。選項會依所選科別自動載入該科醫師名單（每科 3 位）</td>
+  </tr>
+</table>
+
+<div class="tip">
+<strong>提示：</strong>「科別」與「醫師」為<strong>級聯選單</strong>，請先選擇科別，醫師選單才會出現對應選項。若更換科別，醫師會自動清空並重新載入。
+</div>
+
+<div class="note">
+<strong>注意：</strong>掛號號碼是依照「掛號日期 + 掛號時段 + 科別」來編號。例如同一天上午內科的第一位掛號者為 01 號、第二位為 02 號；同一天下午內科則重新從 01 號開始編號。
+</div>
+
+<!-- ============================== 步驟四 ============================== -->
+
+<h3 id="step4">八、步驟四：確認掛號</h3>
+
+<ol class="steps">
+  <li>確認所有資訊填寫正確後，點擊畫面下方的 <span class="btn btn-green">確認掛號</span> 按鈕。</li>
+  <li>系統會自動檢查必填欄位（病歷號碼、姓名、掛號日期、掛號時段、科別、醫師）是否已填寫。</li>
+  <li>若有遺漏，系統會彈出提示訊息，請補齊後再次點擊。</li>
+  <li>掛號成功後：
+    <ul>
+      <li>畫面中央會顯示<strong>科別名稱</strong>與<strong>掛號號碼</strong>（兩碼數字，如 01、02）。</li>
+      <li>系統彈出「掛號成功！」提示訊息。</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="warning">
+<strong>必填欄位：</strong>病歷號碼、姓名、掛號日期、掛號時段、科別、醫師。缺少任何一項將無法完成掛號。
+</div>
+
+<!-- ============================== 步驟五 ============================== -->
+
+<h3 id="step5">九、步驟五：列印掛號單</h3>
+
+<ol class="steps">
+  <li>掛號成功後，若需列印掛號單，點擊 <span class="btn btn-green">列印掛號單</span> 按鈕。</li>
+  <li>系統會開啟瀏覽器的列印對話框。</li>
+  <li>確認印表機設定後，點擊「列印」即可輸出掛號收據。</li>
+</ol>
+
+<div class="tip">
+<strong>提示：</strong>列印功能為選擇性操作，非必要步驟。
+</div>
+
+<!-- ============================== 步驟六 ============================== -->
+
+<h3 id="step6">十、步驟六：清除畫面（準備下一位）</h3>
+
+<ol class="steps">
+  <li>完成掛號（及列印）後，點擊 <span class="btn btn-mid">清除畫面</span> 按鈕。</li>
+  <li>系統會重置所有欄位至初始狀態：
+    <ul>
+      <li>所有文字欄位清空</li>
+      <li>所有下拉選單回到「請選擇」</li>
+      <li>掛號日期回到今天</li>
+      <li>掛號號碼回到「--」</li>
+    </ul>
+  </li>
+  <li>即可開始下一位病患的掛號作業。</li>
+</ol>
+
+<!-- ============================== 舊病患範例 ============================== -->
+
+<h3 id="old-patient" class="page-break">十一、舊病患掛號操作範例</h3>
+
+<p>以下示範一位已有就醫紀錄的病患前來掛號的完整操作：</p>
+
+<div class="section-box">
+<p><strong>情境：</strong>病患王小明（身分證 A123456789）前來內科看診，掛號上午門診。</p>
+</div>
+
+<div class="step-box">
+<span class="step-num">1</span> <strong>輸入病歷號碼</strong><br>
+在「病歷號碼」欄位輸入 <code>A123456789</code>。
+</div>
+
+<div class="step-box">
+<span class="step-num">2</span> <strong>系統自動帶入</strong><br>
+系統自動查詢到病患資料，自動帶入：<br>
+姓名：王小明 ｜ 性別：男 ｜ 生日：1990-05-15 ｜ 年齡：35 ｜ 電話：0912345678<br>
+縣市：台北市 ｜ 區域：大安區 ｜ 地址：和平東路一段 100 號<br>
+初複診：自動設為「複診」
+</div>
+
+<div class="step-box">
+<span class="step-num">3</span> <strong>確認病患資訊</strong><br>
+確認自動帶入的資料是否正確。若有變更（例如電話換新），可直接修改。
+</div>
+
+<div class="step-box">
+<span class="step-num">4</span> <strong>選擇門診資訊</strong><br>
+掛號日期：（維持今天）<br>
+掛號時段：選擇「上午」<br>
+科別：選擇「內科」→ 醫師選單自動載入內科醫師<br>
+醫師：選擇「王建明」
+</div>
+
+<div class="step-box">
+<span class="step-num">5</span> <strong>確認掛號</strong><br>
+點擊 <span class="btn btn-green">確認掛號</span>。畫面顯示「內科」及掛號號碼（如 03），彈出「掛號成功！」。
+</div>
+
+<div class="step-box">
+<span class="step-num">6</span> <strong>列印與清除</strong><br>
+如需列印，點擊 <span class="btn btn-green">列印掛號單</span>。完成後點擊 <span class="btn btn-mid">清除畫面</span> 準備下一位。
+</div>
+
+<!-- ============================== 新病患範例 ============================== -->
+
+<h3 id="new-patient" class="page-break">十二、新病患掛號操作範例</h3>
+
+<p>以下示範一位首次就醫的新病患掛號的完整操作：</p>
+
+<div class="section-box">
+<p><strong>情境：</strong>新病患陳美美（身分證 F231234567）首次前來眼科看診，掛號下午門診。</p>
+</div>
+
+<div class="step-box">
+<span class="step-num">1</span> <strong>輸入病歷號碼</strong><br>
+在「病歷號碼」欄位輸入 <code>F231234567</code>。
+</div>
+
+<div class="step-box">
+<span class="step-num">2</span> <strong>系統查無此病患</strong><br>
+系統查詢後無此病患紀錄，初複診自動設為「初診」，其餘欄位為空白。
+</div>
+
+<div class="step-box">
+<span class="step-num">3</span> <strong>手動填寫病患資訊</strong><br>
+姓名：輸入「陳美美」<br>
+性別：選擇「女」<br>
+生日：選擇「1985-08-20」→ 年齡自動顯示「40」<br>
+電話：輸入「0987654321」<br>
+縣市：選擇「新北市」→ 區域選單自動載入新北市各區<br>
+區域：選擇「板橋區」<br>
+詳細地址：輸入「文化路一段 50 號」
+</div>
+
+<div class="step-box">
+<span class="step-num">4</span> <strong>選擇門診資訊</strong><br>
+掛號日期：（維持今天）<br>
+掛號時段：選擇「下午」<br>
+科別：選擇「眼科」→ 醫師選單自動載入眼科醫師<br>
+醫師：選擇「廖美慧」
+</div>
+
+<div class="step-box">
+<span class="step-num">5</span> <strong>確認掛號</strong><br>
+點擊 <span class="btn btn-green">確認掛號</span>。系統自動建立新病患資料並完成掛號。畫面顯示「眼科」及掛號號碼（如 01），彈出「掛號成功！」。
+</div>
+
+<div class="step-box">
+<span class="step-num">6</span> <strong>列印與清除</strong><br>
+如需列印，點擊 <span class="btn btn-green">列印掛號單</span>。完成後點擊 <span class="btn btn-mid">清除畫面</span> 準備下一位。
+</div>
+
+<div class="tip">
+<strong>提示：</strong>新病患的資料在掛號成功後會自動儲存至資料庫。下次該病患再來掛號時，只要輸入相同的身分證字號，系統就會自動帶入其資料。
+</div>
+
+<!-- ============================== 操作按鈕說明 ============================== -->
+
+<h3 id="buttons" class="page-break">十三、操作按鈕說明</h3>
+
+<p>畫面下方共有四個操作按鈕，功能說明如下：</p>
+
+<table>
+  <tr><th>按鈕</th><th>功能</th><th>使用時機</th></tr>
+  <tr>
+    <td><span class="btn btn-green">確認掛號</span></td>
+    <td>執行掛號作業：檢查必填欄位 → 新增或更新病患資料 → 建立掛號紀錄 → 產生掛號號碼</td>
+    <td>所有資訊填寫完畢，確認無誤後點擊</td>
+  </tr>
+  <tr>
+    <td><span class="btn btn-green">列印掛號單</span></td>
+    <td>開啟瀏覽器列印功能，列印當前畫面作為掛號收據</td>
+    <td>掛號成功後，需要提供紙本收據給病患時點擊</td>
+  </tr>
+  <tr>
+    <td><span class="btn btn-mid">清除畫面</span></td>
+    <td>重置所有欄位為初始狀態，準備進行下一筆掛號</td>
+    <td>完成一筆掛號後，準備為下一位病患掛號時點擊</td>
+  </tr>
+  <tr>
+    <td><span class="btn btn-gray">結束離開</span></td>
+    <td>關閉瀏覽器視窗，結束系統</td>
+    <td>所有掛號作業完成，不再使用系統時點擊</td>
+  </tr>
+</table>
+
+<!-- ============================== 驗證機制 ============================== -->
+
+<h3 id="validation">十四、驗證機制說明</h3>
+
+<p>系統內建多項驗證機制，協助掛號人員避免輸入錯誤：</p>
+
+<h4>1. 身分證字號即時驗證</h4>
+<ul>
+  <li>輸入每一碼時即時檢查格式是否正確。</li>
+  <li>錯誤時欄位框線變為<span style="color:#A62911; font-weight:bold;">紅色</span>，背景變為淡紅色，下方顯示紅色錯誤訊息。</li>
+  <li>完整 10 碼後進行 MOD-10 檢查碼驗證。</li>
+</ul>
+
+<h4>2. 必填欄位檢查</h4>
+<ul>
+  <li>點擊「確認掛號」時，系統檢查以下欄位是否已填寫：</li>
+</ul>
+<table>
+  <tr><th>必填欄位</th><th>所在區塊</th></tr>
+  <tr><td>病歷號碼</td><td>病患資訊</td></tr>
+  <tr><td>姓名</td><td>病患資訊</td></tr>
+  <tr><td>掛號日期</td><td>門診預約</td></tr>
+  <tr><td>掛號時段</td><td>門診預約</td></tr>
+  <tr><td>科別</td><td>門診預約</td></tr>
+  <tr><td>醫師</td><td>門診預約</td></tr>
+</table>
+<ul>
+  <li>若有遺漏，系統會彈出提示視窗告知需補齊的欄位。</li>
+</ul>
+
+<h4>3. 掛號失敗處理</h4>
+<ul>
+  <li>若因資料庫錯誤或其他原因導致掛號失敗，系統會彈出「掛號失敗：」加上具體錯誤訊息。</li>
+  <li>請依據錯誤訊息排除問題後重新操作。</li>
+</ul>
+
+<!-- ============================== FAQ ============================== -->
+
+<h3 id="faq" class="page-break">十五、常見問題（FAQ）</h3>
+
+<p class="qa-q">Q1：輸入病歷號碼後，為什麼出現紅色錯誤訊息？</p>
+<p class="qa-a">A：系統會即時驗證身分證字號的格式。請確認：第一碼為英文字母（A-Z），第二碼起為數字，共 10 碼。若 10 碼都輸入正確仍出現「檢查碼錯誤」，表示該號碼不是合法的身分證字號，請確認輸入是否正確。</p>
+
+<p class="qa-q">Q2：輸入病歷號碼後，病患資料沒有自動帶入？</p>
+<p class="qa-a">A：表示該病患為<strong>新病患</strong>（初次就醫），資料庫中沒有其紀錄。請手動填寫病患資訊，掛號成功後系統會自動將其資料儲存。</p>
+
+<p class="qa-q">Q3：選擇縣市後，區域選單是空的？</p>
+<p class="qa-a">A：區域選單會在選擇縣市後自動載入對應的鄉鎮市區資料。若顯示為空，可能是網路連線問題。請確認後端伺服器是否正常運作。</p>
+
+<p class="qa-q">Q4：為什麼選擇科別後，醫師選單沒有出現選項？</p>
+<p class="qa-a">A：與上題相同，醫師選單依賴科別選擇後從後端載入。請確認系統後端是否正常啟動。</p>
+
+<p class="qa-q">Q5：年齡欄位可以手動輸入嗎？</p>
+<p class="qa-a">A：可以手動輸入，但建議透過選擇「生日」讓系統自動計算，以確保年齡的準確性。</p>
+
+<p class="qa-q">Q6：掛號號碼是怎麼產生的？</p>
+<p class="qa-a">A：掛號號碼由系統自動產生，規則為<strong>當日 + 該時段 + 該科別</strong>的累計掛號數量加 1。例如今天上午內科已有 5 位掛號，下一位即為 06 號。上午與下午分開計號。</p>
+
+<p class="qa-q">Q7：可以幫病患掛其他日期的號嗎？</p>
+<p class="qa-a">A：可以。「掛號日期」欄位預設為今天，但可以手動修改為其他日期來進行預約掛號。</p>
+
+<p class="qa-q">Q8：掛號成功後發現資料有誤，可以修改嗎？</p>
+<p class="qa-a">A：病患基本資料（姓名、電話、地址等）會在每次掛號時自動更新。若需修改，在下次掛號時修正資料即可，系統會自動覆蓋舊資料。</p>
+
+<p class="qa-q">Q9：點擊「結束離開」但視窗沒有關閉？</p>
+<p class="qa-a">A：部分瀏覽器基於安全考量，不允許由程式關閉非程式開啟的視窗。此時請手動關閉瀏覽器分頁即可。</p>
+
+<p class="qa-q">Q10：系統無法啟動或畫面空白？</p>
+<p class="qa-a">A：請確認：<br>
+  1. 是否已執行過 <code>install.command</code> 安裝套件。<br>
+  2. <code>start.command</code> 是否正常執行，終端機視窗是否有錯誤訊息。<br>
+  3. 瀏覽器網址是否為 <code>http://localhost:5173</code>。<br>
+  若問題持續，請聯繫系統管理人員。
+</p>
+
+<!-- ============================== 操作小技巧 ============================== -->
+
+<h3 id="shortcuts">十六、操作小技巧</h3>
+
+<table>
+  <tr><th>技巧</th><th>說明</th></tr>
+  <tr>
+    <td><strong>快速掛號（舊病患）</strong></td>
+    <td>只需輸入病歷號碼 → 選擇時段 → 選擇科別 → 選擇醫師 → 確認掛號，最快 5 個操作即可完成</td>
+  </tr>
+  <tr>
+    <td><strong>英文自動大寫</strong></td>
+    <td>病歷號碼欄位會自動將小寫英文轉為大寫，無需擔心 Caps Lock 狀態</td>
+  </tr>
+  <tr>
+    <td><strong>善用自動帶入</strong></td>
+    <td>舊病患的資料會完整帶入，通常只需確認無誤即可，不需重新輸入</td>
+  </tr>
+  <tr>
+    <td><strong>Tab 鍵切換欄位</strong></td>
+    <td>可使用鍵盤 Tab 鍵依序切換到下一個欄位，加快輸入速度</td>
+  </tr>
+  <tr>
+    <td><strong>掛號日期預設今天</strong></td>
+    <td>大多數情況下掛號日期不需修改，可直接跳過此欄位</td>
+  </tr>
+  <tr>
+    <td><strong>連續掛號</strong></td>
+    <td>完成一筆掛號後，點擊「清除畫面」即可立即進行下一位病患的掛號，無需重新載入頁面</td>
+  </tr>
+</table>
+
+<div class="footer">
+  安康綜合醫院 掛號系統 &nbsp;|&nbsp; 操作手冊 &nbsp;|&nbsp; 115.4.7 製作
+</div>
+
+</body>
+</html>

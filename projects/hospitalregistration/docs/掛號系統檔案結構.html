@@ -67,7 +67,7 @@
 
 <div class="note">
 <strong>鍵值符號說明：</strong><br>
-P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Foreign Key）｜U：唯一鍵（Unique Key）
+P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Foreign Key）
 </div>
 
 <!-- ============================== 檔案結構概述 ============================== -->
@@ -77,6 +77,8 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
 <p>本系統資料庫採用 <strong>SQLite</strong>，啟用 <strong>WAL（Write-Ahead Logging）</strong>模式支援並行存取。資料庫檔案位於 <code>database/hospital.db</code>。所有資料表均啟用外鍵約束（<code>PRAGMA foreign_keys = ON</code>）。</p>
 
 <p>參考文件：<strong>慈濟醫院門診掛號系統檔案結構</strong>。本系統從慈濟醫院掛號系統之檔案結構中擷取核心概念，簡化設計為六張資料表。</p>
+
+<p>本系統所有資料表均採用<strong>自然鍵（Natural Key）</strong>作為主鍵，不使用自動遞增流水號，使資料具備業務意義且易於辨識。</p>
 
 <h4>與慈濟系統對應關係</h4>
 <table>
@@ -110,42 +112,41 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
   <tr><td>表格（中文）</td><td>縣市主檔</td></tr>
   <tr><td>表格（英文）</td><td>cities</td></tr>
   <tr><td>對應慈濟表</td><td>縣市主檔（COUNTYTBL）</td></tr>
-  <tr><td>說明</td><td>儲存全台灣 22 個縣市資料，作為區域表（districts）的父表，提供病患地址之縣市級聯選擇的第一層資料來源。</td></tr>
+  <tr><td>說明</td><td>儲存全台灣 22 個縣市資料，以縣市名稱作為主鍵。作為區域表（districts）的父表，提供病患地址之縣市級聯選擇的第一層資料來源。</td></tr>
 </table>
 </div>
 
 <h4>欄位結構</h4>
 <table>
   <tr><th>鍵值</th><th>欄位名稱（英文）</th><th>欄位名稱（中文）</th><th>型態</th><th>屬性</th><th>說明</th></tr>
-  <tr><td>P</td><td>id</td><td>編號</td><td>INTEGER</td><td>PRIMARY KEY AUTOINCREMENT</td><td>自動遞增主鍵</td></tr>
-  <tr><td>U</td><td>name</td><td>縣市名稱</td><td>TEXT</td><td>NOT NULL UNIQUE</td><td>縣市名稱，UNIQUE 約束確保不重複。例：台北市、新北市</td></tr>
+  <tr><td>P</td><td>name</td><td>縣市名稱</td><td>TEXT</td><td>PRIMARY KEY</td><td>縣市名稱，作為主鍵。例：台北市、新北市</td></tr>
 </table>
 
 <h4>預設資料：全台灣 22 縣市</h4>
 <table>
-  <tr><th>id</th><th>name</th></tr>
-  <tr><td>1</td><td>台北市</td></tr>
-  <tr><td>2</td><td>新北市</td></tr>
-  <tr><td>3</td><td>基隆市</td></tr>
-  <tr><td>4</td><td>桃園市</td></tr>
-  <tr><td>5</td><td>新竹市</td></tr>
-  <tr><td>6</td><td>新竹縣</td></tr>
-  <tr><td>7</td><td>苗栗縣</td></tr>
-  <tr><td>8</td><td>台中市</td></tr>
-  <tr><td>9</td><td>彰化縣</td></tr>
-  <tr><td>10</td><td>南投縣</td></tr>
-  <tr><td>11</td><td>雲林縣</td></tr>
-  <tr><td>12</td><td>嘉義市</td></tr>
-  <tr><td>13</td><td>嘉義縣</td></tr>
-  <tr><td>14</td><td>台南市</td></tr>
-  <tr><td>15</td><td>高雄市</td></tr>
-  <tr><td>16</td><td>屏東縣</td></tr>
-  <tr><td>17</td><td>宜蘭縣</td></tr>
-  <tr><td>18</td><td>花蓮縣</td></tr>
-  <tr><td>19</td><td>台東縣</td></tr>
-  <tr><td>20</td><td>澎湖縣</td></tr>
-  <tr><td>21</td><td>金門縣</td></tr>
-  <tr><td>22</td><td>連江縣</td></tr>
+  <tr><th>name</th></tr>
+  <tr><td>台北市</td></tr>
+  <tr><td>新北市</td></tr>
+  <tr><td>基隆市</td></tr>
+  <tr><td>桃園市</td></tr>
+  <tr><td>新竹市</td></tr>
+  <tr><td>新竹縣</td></tr>
+  <tr><td>苗栗縣</td></tr>
+  <tr><td>台中市</td></tr>
+  <tr><td>彰化縣</td></tr>
+  <tr><td>南投縣</td></tr>
+  <tr><td>雲林縣</td></tr>
+  <tr><td>嘉義市</td></tr>
+  <tr><td>嘉義縣</td></tr>
+  <tr><td>台南市</td></tr>
+  <tr><td>高雄市</td></tr>
+  <tr><td>屏東縣</td></tr>
+  <tr><td>宜蘭縣</td></tr>
+  <tr><td>花蓮縣</td></tr>
+  <tr><td>台東縣</td></tr>
+  <tr><td>澎湖縣</td></tr>
+  <tr><td>金門縣</td></tr>
+  <tr><td>連江縣</td></tr>
 </table>
 
 <!-- ============================== 區域主檔 ============================== -->
@@ -159,16 +160,15 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
   <tr><td>表格（中文）</td><td>區域主檔</td></tr>
   <tr><td>表格（英文）</td><td>districts</td></tr>
   <tr><td>對應慈濟表</td><td>鄉鎮主檔（TOWNTBL）</td></tr>
-  <tr><td>說明</td><td>儲存各縣市下的鄉鎮市區資料，透過 city_id 外鍵建立與縣市表的一對多關聯（一個縣市對應多個區域），提供級聯選擇的第二層資料。</td></tr>
+  <tr><td>說明</td><td>儲存各縣市下的鄉鎮市區資料，以（city_name, name）複合主鍵識別。透過 city_name 外鍵建立與縣市表的一對多關聯（一個縣市對應多個區域），提供級聯選擇的第二層資料。</td></tr>
 </table>
 </div>
 
 <h4>欄位結構</h4>
 <table>
   <tr><th>鍵值</th><th>欄位名稱（英文）</th><th>欄位名稱（中文）</th><th>型態</th><th>屬性</th><th>說明</th></tr>
-  <tr><td>P</td><td>id</td><td>編號</td><td>INTEGER</td><td>PRIMARY KEY AUTOINCREMENT</td><td>自動遞增主鍵</td></tr>
-  <tr><td></td><td>name</td><td>區域名稱</td><td>TEXT</td><td>NOT NULL</td><td>鄉鎮市區名稱。例：中正區、板橋區</td></tr>
-  <tr><td>FK, S</td><td>city_id</td><td>所屬縣市</td><td>INTEGER</td><td>NOT NULL, FOREIGN KEY REFERENCES cities(id)</td><td>外鍵，關聯 cities 表。索引：idx_districts_city</td></tr>
+  <tr><td>P, FK, S</td><td>city_name</td><td>所屬縣市</td><td>TEXT</td><td>NOT NULL, FOREIGN KEY REFERENCES cities(name)</td><td>外鍵，關聯 cities 表。與 name 共同組成複合主鍵。索引：idx_districts_city</td></tr>
+  <tr><td>P</td><td>name</td><td>區域名稱</td><td>TEXT</td><td>NOT NULL</td><td>鄉鎮市區名稱。與 city_name 共同組成複合主鍵。例：中正區、板橋區</td></tr>
 </table>
 
 <h4>預設資料範例</h4>
@@ -195,29 +195,28 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
   <tr><td>表格（中文）</td><td>科別主檔</td></tr>
   <tr><td>表格（英文）</td><td>departments</td></tr>
   <tr><td>對應慈濟表</td><td>院內科別檔（GenSectionTbl）</td></tr>
-  <tr><td>說明</td><td>儲存醫院各門診科別資料。慈濟原始系統使用 2 碼數字代號（如 01、22），本系統改用有意義的英文代碼提升可讀性。作為醫師表（doctors）的父表。</td></tr>
+  <tr><td>說明</td><td>儲存醫院各門診科別資料，以科別代碼（code）作為主鍵。慈濟原始系統使用 2 碼數字代號（如 01、22），本系統改用有意義的英文代碼提升可讀性。作為醫師表（doctors）的父表。</td></tr>
 </table>
 </div>
 
 <h4>欄位結構</h4>
 <table>
   <tr><th>鍵值</th><th>欄位名稱（英文）</th><th>欄位名稱（中文）</th><th>型態</th><th>屬性</th><th>說明</th></tr>
-  <tr><td>P</td><td>id</td><td>編號</td><td>INTEGER</td><td>PRIMARY KEY AUTOINCREMENT</td><td>自動遞增主鍵</td></tr>
-  <tr><td>U</td><td>code</td><td>科別代碼</td><td>TEXT</td><td>NOT NULL UNIQUE</td><td>科別英文代碼，UNIQUE 約束。例：internal、surgery</td></tr>
+  <tr><td>P</td><td>code</td><td>科別代碼</td><td>TEXT</td><td>PRIMARY KEY</td><td>科別英文代碼，作為主鍵。例：internal、surgery</td></tr>
   <tr><td></td><td>name</td><td>科別名稱</td><td>TEXT</td><td>NOT NULL</td><td>科別中文名稱。例：內科、外科</td></tr>
 </table>
 
 <h4>預設資料：8 大科別</h4>
 <table>
-  <tr><th>id</th><th>code</th><th>name（科別名稱）</th></tr>
-  <tr><td>1</td><td>internal</td><td>內科</td></tr>
-  <tr><td>2</td><td>surgery</td><td>外科</td></tr>
-  <tr><td>3</td><td>pediatrics</td><td>小兒科</td></tr>
-  <tr><td>4</td><td>obgyn</td><td>婦產科</td></tr>
-  <tr><td>5</td><td>ent</td><td>耳鼻喉科</td></tr>
-  <tr><td>6</td><td>derma</td><td>皮膚科</td></tr>
-  <tr><td>7</td><td>eye</td><td>眼科</td></tr>
-  <tr><td>8</td><td>family</td><td>家醫科</td></tr>
+  <tr><th>code</th><th>name（科別名稱）</th></tr>
+  <tr><td>internal</td><td>內科</td></tr>
+  <tr><td>surgery</td><td>外科</td></tr>
+  <tr><td>pediatrics</td><td>小兒科</td></tr>
+  <tr><td>obgyn</td><td>婦產科</td></tr>
+  <tr><td>ent</td><td>耳鼻喉科</td></tr>
+  <tr><td>derma</td><td>皮膚科</td></tr>
+  <tr><td>eye</td><td>眼科</td></tr>
+  <tr><td>family</td><td>家醫科</td></tr>
 </table>
 
 <!-- ============================== 醫師主檔 ============================== -->
@@ -231,16 +230,15 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
   <tr><td>表格（中文）</td><td>醫師主檔</td></tr>
   <tr><td>表格（英文）</td><td>doctors</td></tr>
   <tr><td>對應慈濟表</td><td>醫師檔（GenDoctorTbl）</td></tr>
-  <tr><td>說明</td><td>儲存各科別之醫師資料。慈濟原始系統包含醫師身分證號、申報代號、離職日等欄位，本系統簡化為核心欄位。透過 department_id 外鍵建立與科別表的歸屬關係。每科配置 3 位醫師，共 24 位。</td></tr>
+  <tr><td>說明</td><td>儲存各科別之醫師資料。慈濟原始系統包含醫師身分證號、申報代號、離職日等欄位，本系統簡化為核心欄位。以（department_code, name）複合主鍵識別，透過 department_code 外鍵建立與科別表的歸屬關係。每科配置 3 位醫師，共 24 位。</td></tr>
 </table>
 </div>
 
 <h4>欄位結構</h4>
 <table>
   <tr><th>鍵值</th><th>欄位名稱（英文）</th><th>欄位名稱（中文）</th><th>型態</th><th>屬性</th><th>說明</th></tr>
-  <tr><td>P</td><td>id</td><td>編號</td><td>INTEGER</td><td>PRIMARY KEY AUTOINCREMENT</td><td>自動遞增主鍵</td></tr>
-  <tr><td></td><td>name</td><td>醫師姓名</td><td>TEXT</td><td>NOT NULL</td><td>醫師中文姓名。例：王建明、林淑芬</td></tr>
-  <tr><td>FK, S</td><td>department_id</td><td>所屬科別</td><td>INTEGER</td><td>NOT NULL, FOREIGN KEY REFERENCES departments(id)</td><td>外鍵，關聯 departments 表。索引：idx_doctors_department</td></tr>
+  <tr><td>P, FK, S</td><td>department_code</td><td>所屬科別代碼</td><td>TEXT</td><td>NOT NULL, FOREIGN KEY REFERENCES departments(code)</td><td>外鍵，關聯 departments 表。與 name 共同組成複合主鍵。索引：idx_doctors_department</td></tr>
+  <tr><td>P</td><td>name</td><td>醫師姓名</td><td>TEXT</td><td>NOT NULL</td><td>醫師中文姓名。與 department_code 共同組成複合主鍵。例：王建明、林淑芬</td></tr>
 </table>
 
 <h4>預設資料：每科 3 位醫師</h4>
@@ -267,22 +265,21 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
   <tr><td>表格（中文）</td><td>病患資料檔</td></tr>
   <tr><td>表格（英文）</td><td>patients</td></tr>
   <tr><td>對應慈濟表</td><td>（新設計，整合病患基本資料）</td></tr>
-  <tr><td>說明</td><td>儲存病患個人資料，以病歷號碼（台灣身分證字號格式）作為唯一識別碼。透過 city_id 和 district_id 兩個外鍵關聯地址資料。支援新增病患與更新既有病患資料。</td></tr>
+  <tr><td>說明</td><td>儲存病患個人資料，以病歷號碼（台灣身分證字號格式）作為主鍵。透過 city_name 和（city_name, district_name）兩組外鍵關聯地址資料。支援新增病患與更新既有病患資料。</td></tr>
 </table>
 </div>
 
 <h4>欄位結構</h4>
 <table>
   <tr><th>鍵值</th><th>欄位名稱（英文）</th><th>欄位名稱（中文）</th><th>型態</th><th>屬性</th><th>說明</th></tr>
-  <tr><td>P</td><td>id</td><td>編號</td><td>INTEGER</td><td>PRIMARY KEY AUTOINCREMENT</td><td>自動遞增主鍵</td></tr>
-  <tr><td>U, S</td><td>medical_no</td><td>病歷號碼</td><td>TEXT</td><td>NOT NULL UNIQUE</td><td>病患唯一識別碼。格式：台灣身分證字號（1碼英文 + 9碼數字）。例：A123456789。含 MOD-10 檢查碼驗證。索引：idx_patients_medical_no</td></tr>
+  <tr><td>P</td><td>medical_no</td><td>病歷號碼</td><td>TEXT</td><td>PRIMARY KEY</td><td>病患唯一識別碼，作為主鍵。格式：台灣身分證字號（1碼英文 + 9碼數字）。例：A123456789。含 MOD-10 檢查碼驗證</td></tr>
   <tr><td></td><td>name</td><td>姓名</td><td>TEXT</td><td>NOT NULL</td><td>病患中文姓名</td></tr>
   <tr><td></td><td>gender</td><td>性別</td><td>TEXT</td><td>CHECK(gender IN ('male', 'female'))</td><td>male：男；female：女</td></tr>
   <tr><td></td><td>birthday</td><td>生日</td><td>TEXT</td><td></td><td>格式：YYYY-MM-DD。例：1990-05-15</td></tr>
   <tr><td></td><td>age</td><td>年齡</td><td>INTEGER</td><td></td><td>由前端根據生日自動計算</td></tr>
   <tr><td></td><td>phone</td><td>電話</td><td>TEXT</td><td></td><td>聯絡電話</td></tr>
-  <tr><td>FK, S</td><td>city_id</td><td>縣市</td><td>INTEGER</td><td>FOREIGN KEY REFERENCES cities(id)</td><td>外鍵，關聯 cities 表。索引：idx_patients_city</td></tr>
-  <tr><td>FK, S</td><td>district_id</td><td>區域</td><td>INTEGER</td><td>FOREIGN KEY REFERENCES districts(id)</td><td>外鍵，關聯 districts 表。索引：idx_patients_district</td></tr>
+  <tr><td>FK, S</td><td>city_name</td><td>縣市</td><td>TEXT</td><td>FOREIGN KEY REFERENCES cities(name)</td><td>外鍵，關聯 cities 表。索引：idx_patients_city</td></tr>
+  <tr><td>FK, S</td><td>district_name</td><td>區域</td><td>TEXT</td><td>FOREIGN KEY (city_name, district_name) REFERENCES districts(city_name, name)</td><td>與 city_name 共同組成複合外鍵，關聯 districts 表。索引：idx_patients_district</td></tr>
   <tr><td></td><td>address</td><td>詳細地址</td><td>TEXT</td><td></td><td>門牌號碼等詳細地址</td></tr>
   <tr><td></td><td>created_at</td><td>建立時間</td><td>TEXT</td><td>DEFAULT datetime('now','localtime')</td><td>自動記錄建立時間。格式：YYYY-MM-DD HH:MM:SS</td></tr>
   <tr><td></td><td>updated_at</td><td>更新時間</td><td>TEXT</td><td>DEFAULT datetime('now','localtime')</td><td>自動記錄最後修改時間。格式：YYYY-MM-DD HH:MM:SS</td></tr>
@@ -320,7 +317,7 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
   <tr><td>表格（中文）</td><td>掛號紀錄檔</td></tr>
   <tr><td>表格（英文）</td><td>registrations</td></tr>
   <tr><td>對應慈濟表</td><td>掛號看診檔（OpdRegDiagnosisTbl）</td></tr>
-  <tr><td>說明</td><td>儲存門診掛號紀錄。掛號號碼由系統自動產生，規則為當日該科別的累計掛號數加 1，以兩碼數字呈現（如 01、02）。透過三個外鍵分別關聯病患、科別與醫師表。</td></tr>
+  <tr><td>說明</td><td>儲存門診掛號紀錄。以（reg_date, reg_period, department_code, reg_number）複合主鍵識別。掛號號碼由系統自動產生，規則為當日該時段該科別的累計掛號數加 1，以兩碼數字呈現（如 01、02）。透過外鍵分別關聯病患、科別與醫師表。</td></tr>
 </table>
 </div>
 
@@ -328,24 +325,25 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
 <table>
   <tr><th>本系統欄位</th><th>慈濟系統對應欄位</th><th>說明</th></tr>
   <tr><td>reg_number</td><td>intRegNo（序號）</td><td>就醫序號，由給號系統給定</td></tr>
-  <tr><td>patient_id</td><td>chMRNo（病歷號）</td><td>病歷號碼，10碼</td></tr>
+  <tr><td>patient_medical_no</td><td>chMRNo（病歷號）</td><td>病歷號碼，10碼</td></tr>
   <tr><td>visit_type</td><td>chRegFM（初複診掛號）</td><td>0/1：初診，2：複診</td></tr>
   <tr><td>reg_date</td><td>chDate（日期）</td><td>掛號日期</td></tr>
-  <tr><td>department_id</td><td>chSecNo（科別代號）</td><td>由排班表抄回</td></tr>
-  <tr><td>doctor_id</td><td>chDocNo（醫師代號）</td><td>由排班表抄回</td></tr>
+  <tr><td>reg_period</td><td>chNoonCode（午別代碼）</td><td>掛號時段：上午／下午</td></tr>
+  <tr><td>department_code</td><td>chSecNo（科別代號）</td><td>由排班表抄回</td></tr>
+  <tr><td>doctor_name</td><td>chDocNo（醫師代號）</td><td>由排班表抄回</td></tr>
   <tr><td>status</td><td>chIfWithdraw + chDigStat</td><td>取消掛號 + 看診狀態</td></tr>
 </table>
 
 <h4>欄位結構</h4>
 <table>
   <tr><th>鍵值</th><th>欄位名稱（英文）</th><th>欄位名稱（中文）</th><th>型態</th><th>屬性</th><th>說明</th></tr>
-  <tr><td>P</td><td>id</td><td>編號</td><td>INTEGER</td><td>PRIMARY KEY AUTOINCREMENT</td><td>自動遞增主鍵</td></tr>
-  <tr><td></td><td>reg_number</td><td>掛號號碼</td><td>TEXT</td><td>NOT NULL</td><td>系統自動產生。規則：當日該科別已有掛號數 + 1。格式：兩碼數字（如 01、02、03）</td></tr>
-  <tr><td>FK, S</td><td>patient_id</td><td>病患編號</td><td>INTEGER</td><td>NOT NULL, FOREIGN KEY REFERENCES patients(id)</td><td>外鍵，關聯 patients 表。索引：idx_registrations_patient</td></tr>
+  <tr><td>P</td><td>reg_date</td><td>掛號日期</td><td>TEXT</td><td>NOT NULL</td><td>格式：YYYY-MM-DD。複合主鍵之一</td></tr>
+  <tr><td>P</td><td>reg_period</td><td>掛號時段</td><td>TEXT</td><td>NOT NULL, CHECK(reg_period IN ('morning', 'afternoon'))</td><td>morning：上午；afternoon：下午。複合主鍵之一</td></tr>
+  <tr><td>P, FK</td><td>department_code</td><td>科別代碼</td><td>TEXT</td><td>NOT NULL, FOREIGN KEY REFERENCES departments(code)</td><td>外鍵，關聯 departments 表。複合主鍵之一</td></tr>
+  <tr><td>P</td><td>reg_number</td><td>掛號號碼</td><td>TEXT</td><td>NOT NULL</td><td>系統自動產生。規則：當日該時段該科別已有掛號數 + 1。格式：兩碼數字（如 01、02、03）。複合主鍵之一</td></tr>
+  <tr><td>FK, S</td><td>patient_medical_no</td><td>病患病歷號碼</td><td>TEXT</td><td>NOT NULL, FOREIGN KEY REFERENCES patients(medical_no)</td><td>外鍵，關聯 patients 表。索引：idx_registrations_patient</td></tr>
   <tr><td></td><td>visit_type</td><td>初複診</td><td>TEXT</td><td>CHECK(visit_type IN ('first', 'return'))</td><td>first：初診；return：複診。對應慈濟 chRegFM</td></tr>
-  <tr><td>S</td><td>reg_date</td><td>掛號日期</td><td>TEXT</td><td>NOT NULL</td><td>格式：YYYY-MM-DD。索引：idx_registrations_date</td></tr>
-  <tr><td>FK</td><td>department_id</td><td>科別編號</td><td>INTEGER</td><td>NOT NULL, FOREIGN KEY REFERENCES departments(id)</td><td>外鍵，關聯 departments 表</td></tr>
-  <tr><td>FK</td><td>doctor_id</td><td>醫師編號</td><td>INTEGER</td><td>NOT NULL, FOREIGN KEY REFERENCES doctors(id)</td><td>外鍵，關聯 doctors 表</td></tr>
+  <tr><td>FK</td><td>doctor_name</td><td>醫師姓名</td><td>TEXT</td><td>NOT NULL, FOREIGN KEY (department_code, doctor_name) REFERENCES doctors(department_code, name)</td><td>與 department_code 共同組成複合外鍵，關聯 doctors 表</td></tr>
   <tr><td></td><td>status</td><td>掛號狀態</td><td>TEXT</td><td>DEFAULT 'confirmed', CHECK(status IN ('confirmed','cancelled','completed'))</td><td>confirmed：已確認；cancelled：已取消；completed：已完成</td></tr>
   <tr><td></td><td>created_at</td><td>建立時間</td><td>TEXT</td><td>DEFAULT datetime('now','localtime')</td><td>自動記錄掛號建立時間</td></tr>
 </table>
@@ -354,17 +352,15 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
 
 <h3 id="indexes" class="page-break">八、索引設計</h3>
 
-<p>本系統共建立 <strong>7 個索引</strong>，針對常用查詢欄位進行效能優化：</p>
+<p>本系統共建立 <strong>5 個索引</strong>，針對常用查詢欄位進行效能優化：</p>
 
 <table>
   <tr><th>#</th><th>索引名稱</th><th>對應資料表</th><th>索引欄位</th><th>用途說明</th><th>SQL 語法</th></tr>
-  <tr><td>1</td><td>idx_districts_city</td><td>districts</td><td>city_id</td><td>依縣市查詢區域（級聯選擇）</td><td>CREATE INDEX idx_districts_city ON districts(city_id);</td></tr>
-  <tr><td>2</td><td>idx_doctors_department</td><td>doctors</td><td>department_id</td><td>依科別查詢醫師（級聯選擇）</td><td>CREATE INDEX idx_doctors_department ON doctors(department_id);</td></tr>
-  <tr><td>3</td><td>idx_patients_medical_no</td><td>patients</td><td>medical_no</td><td>病歷號碼快速查詢</td><td>CREATE INDEX idx_patients_medical_no ON patients(medical_no);</td></tr>
-  <tr><td>4</td><td>idx_patients_city</td><td>patients</td><td>city_id</td><td>依縣市查詢病患</td><td>CREATE INDEX idx_patients_city ON patients(city_id);</td></tr>
-  <tr><td>5</td><td>idx_patients_district</td><td>patients</td><td>district_id</td><td>依區域查詢病患</td><td>CREATE INDEX idx_patients_district ON patients(district_id);</td></tr>
-  <tr><td>6</td><td>idx_registrations_date</td><td>registrations</td><td>reg_date</td><td>依日期查詢掛號紀錄</td><td>CREATE INDEX idx_registrations_date ON registrations(reg_date);</td></tr>
-  <tr><td>7</td><td>idx_registrations_patient</td><td>registrations</td><td>patient_id</td><td>依病患查詢掛號紀錄</td><td>CREATE INDEX idx_registrations_patient ON registrations(patient_id);</td></tr>
+  <tr><td>1</td><td>idx_districts_city</td><td>districts</td><td>city_name</td><td>依縣市查詢區域（級聯選擇）</td><td>CREATE INDEX idx_districts_city ON districts(city_name);</td></tr>
+  <tr><td>2</td><td>idx_doctors_department</td><td>doctors</td><td>department_code</td><td>依科別查詢醫師（級聯選擇）</td><td>CREATE INDEX idx_doctors_department ON doctors(department_code);</td></tr>
+  <tr><td>3</td><td>idx_patients_city</td><td>patients</td><td>city_name</td><td>依縣市查詢病患</td><td>CREATE INDEX idx_patients_city ON patients(city_name);</td></tr>
+  <tr><td>4</td><td>idx_patients_district</td><td>patients</td><td>city_name, district_name</td><td>依縣市與區域查詢病患</td><td>CREATE INDEX idx_patients_district ON patients(city_name, district_name);</td></tr>
+  <tr><td>5</td><td>idx_registrations_patient</td><td>registrations</td><td>patient_medical_no</td><td>依病患查詢掛號紀錄</td><td>CREATE INDEX idx_registrations_patient ON registrations(patient_medical_no);</td></tr>
 </table>
 
 <!-- ============================== 預設資料摘要 ============================== -->
@@ -404,7 +400,7 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
 <table>
   <tr><th>元件名稱</th><th>類型</th><th>用途</th><th>主要參數</th></tr>
   <tr><td>FormInput</td><td>文字輸入</td><td>病歷號碼、姓名、年齡、電話、地址</td><td>label, placeholder, width, value, onChange, error, maxLength</td></tr>
-  <tr><td>FormSelect</td><td>下拉選單</td><td>性別、初複診、縣市、區域、科別、醫師</td><td>label, placeholder, width, options, value, onChange</td></tr>
+  <tr><td>FormSelect</td><td>下拉選單</td><td>性別、初複診、縣市、區域、掛號時段、科別、醫師</td><td>label, placeholder, width, options, value, onChange</td></tr>
   <tr><td>FormDateInput</td><td>日期選擇</td><td>生日、掛號日期</td><td>label, width, value, onChange</td></tr>
   <tr><td>ActionButton</td><td>操作按鈕</td><td>確認掛號、列印、清除、離開</td><td>icon, label, gradient, onClick</td></tr>
   <tr><td>Divider</td><td>分隔線</td><td>區隔表單列</td><td>（無參數）</td></tr>
@@ -441,7 +437,7 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
     <td>中下方</td>
     <td>自適應</td>
     <td>淡灰漸層 (#FAFAF8 → #F7F6F3)，圓角 16px</td>
-    <td>CalendarCheck 圖示 + 「門診預約」標題。掛號日期/科別/醫師選擇，下方顯示掛號號碼大數字</td>
+    <td>CalendarCheck 圖示 + 「門診預約」標題。掛號日期/掛號時段/科別/醫師選擇，下方顯示掛號號碼大數字</td>
   </tr>
   <tr>
     <td><strong>操作功能列</strong></td>
@@ -550,7 +546,7 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
 
 <h3 id="ui-reg">十三、門診預約區塊</h3>
 
-<p>此區塊為掛號流程的第二步，選擇門診科別與醫師，系統自動產生掛號號碼。</p>
+<p>此區塊為掛號流程的第二步，選擇門診日期、時段、科別與醫師，系統自動產生掛號號碼。</p>
 
 <h4>表單欄位配置</h4>
 <table>
@@ -560,6 +556,12 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
     <td>FormDateInput</td>
     <td>160px</td>
     <td>預設為當天日期（<code>new Date().toISOString().slice(0,10)</code>），可手動修改為其他日期</td>
+  </tr>
+  <tr>
+    <td>掛號時段</td>
+    <td>FormSelect</td>
+    <td>120px</td>
+    <td>下拉選項：上午（morning）/ 下午（afternoon）。必填欄位，用於區分同日不同時段的掛號</td>
   </tr>
   <tr>
     <td>科別</td>
@@ -603,7 +605,7 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
 <h4>掛號號碼產生規則</h4>
 <table>
   <tr><th>步驟</th><th>說明</th><th>範例</th></tr>
-  <tr><td>1</td><td>查詢當日（reg_date）該科別（department_id）已有的掛號數量</td><td>外科已掛 5 號</td></tr>
+  <tr><td>1</td><td>查詢當日（reg_date）該時段（reg_period）該科別（department_code）已有的掛號數量</td><td>外科上午已掛 5 號</td></tr>
   <tr><td>2</td><td>數量 + 1</td><td>5 + 1 = 6</td></tr>
   <tr><td>3</td><td>以兩碼數字格式呈現（padStart(2, "0")）</td><td>「06」</td></tr>
   <tr><td>4</td><td>存入 registrations 表的 reg_number 欄位</td><td>reg_number = "06"</td></tr>
@@ -624,7 +626,7 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
     <td>#4A5D43 → #3D4E38（深綠）</td>
     <td>
       執行完整掛號流程：<br>
-      1. 檢查必填欄位（病歷號碼、姓名、掛號日期、科別、醫師）<br>
+      1. 檢查必填欄位（病歷號碼、姓名、掛號日期、掛號時段、科別、醫師）<br>
       2. 驗證身分證字號格式與檢查碼<br>
       3. 查詢病患是否已存在：已存在則更新（PUT），不存在則新增（POST）<br>
       4. 建立掛號紀錄（POST /api/registrations）<br>
@@ -667,14 +669,14 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
     <td><strong>地址級聯</strong></td>
     <td>縣市（22 選項）</td>
     <td>區域（依縣市動態載入）</td>
-    <td><code>GET /api/cities/:id/districts</code></td>
+    <td><code>GET /api/cities/:cityName/districts</code></td>
     <td>選擇縣市 → 清空區域 → 載入對應區域選項</td>
   </tr>
   <tr>
     <td><strong>門診級聯</strong></td>
     <td>科別（8 選項）</td>
     <td>醫師（依科別動態載入）</td>
-    <td><code>GET /api/departments/:id/doctors</code></td>
+    <td><code>GET /api/departments/:deptCode/doctors</code></td>
     <td>選擇科別 → 清空醫師 → 載入對應醫師選項</td>
   </tr>
 </table>
@@ -731,7 +733,7 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
   <tr>
     <td><strong>必填欄位檢查</strong></td>
     <td>點擊「確認掛號」時</td>
-    <td>彈出 alert 提示「請填寫必要欄位：病歷號碼、姓名、掛號日期、科別、醫師」</td>
+    <td>彈出 alert 提示「請填寫必要欄位：病歷號碼、姓名、掛號日期、掛號時段、科別、醫師」</td>
   </tr>
   <tr>
     <td><strong>掛號失敗處理</strong></td>
@@ -797,7 +799,7 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
 <div class="flow-arrow">↓</div>
 <div class="flow-step"><strong>步驟 3A：既有病患 → 自動帶入</strong><br>查到既有病患：自動帶入姓名、性別、生日、年齡、電話、縣市、區域、地址，初複診設為「複診」。<br><strong>步驟 3B：新病患 → 手動填寫</strong><br>查無此病患：初複診設為「初診」，掛號人員手動填寫病患資料。</div>
 <div class="flow-arrow">↓</div>
-<div class="flow-step"><strong>步驟 4：選擇門診資訊</strong><br>選擇掛號日期（預設當天）→ 選擇科別 → 系統自動載入醫師名單 → 選擇醫師。</div>
+<div class="flow-step"><strong>步驟 4：選擇門診資訊</strong><br>選擇掛號日期（預設當天）→ 選擇掛號時段（上午／下午）→ 選擇科別 → 系統自動載入醫師名單 → 選擇醫師。</div>
 <div class="flow-arrow">↓</div>
 <div class="flow-step"><strong>步驟 5：確認掛號</strong><br>點擊「確認掛號」→ 系統驗證必填欄位 → 新增/更新病患資料（<code>POST/PUT /api/patients</code>）→ 建立掛號紀錄（<code>POST /api/registrations</code>）→ 顯示掛號號碼。</div>
 <div class="flow-arrow">↓</div>
@@ -811,28 +813,28 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
     <td>GET</td>
     <td>/api/cities</td>
     <td>（無）</td>
-    <td>[{id, name}, ...] 22 筆縣市</td>
+    <td>[{name}, ...] 22 筆縣市</td>
   </tr>
   <tr>
     <td>頁面載入</td>
     <td>GET</td>
     <td>/api/departments</td>
     <td>（無）</td>
-    <td>[{id, name}, ...] 8 筆科別</td>
+    <td>[{code, name}, ...] 8 筆科別</td>
   </tr>
   <tr>
     <td>選擇縣市</td>
     <td>GET</td>
-    <td>/api/cities/:cityId/districts</td>
-    <td>cityId (URL)</td>
-    <td>[{id, name}, ...] 該縣市之區域</td>
+    <td>/api/cities/:cityName/districts</td>
+    <td>cityName (URL)</td>
+    <td>[{name}, ...] 該縣市之區域</td>
   </tr>
   <tr>
     <td>選擇科別</td>
     <td>GET</td>
-    <td>/api/departments/:deptId/doctors</td>
-    <td>deptId (URL)</td>
-    <td>[{id, name}, ...] 該科別之醫師</td>
+    <td>/api/departments/:deptCode/doctors</td>
+    <td>deptCode (URL)</td>
+    <td>[{name}, ...] 該科別之醫師</td>
   </tr>
   <tr>
     <td>輸入病歷號碼</td>
@@ -845,21 +847,21 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
     <td>新增病患</td>
     <td>POST</td>
     <td>/api/patients</td>
-    <td>{medical_no, name, gender, birthday, age, phone, city_id, district_id, address}</td>
-    <td>{id} 新建病患 ID</td>
+    <td>{medical_no, name, gender, birthday, age, phone, city_name, district_name, address}</td>
+    <td>{medical_no}</td>
   </tr>
   <tr>
     <td>更新病患</td>
     <td>PUT</td>
-    <td>/api/patients/:id</td>
-    <td>{medical_no, name, gender, ...}</td>
+    <td>/api/patients/:medicalNo</td>
+    <td>{name, gender, birthday, age, phone, city_name, district_name, address}</td>
     <td>更新成功</td>
   </tr>
   <tr>
     <td>建立掛號</td>
     <td>POST</td>
     <td>/api/registrations</td>
-    <td>{patient_id, visit_type, reg_date, department_id, doctor_id}</td>
+    <td>{patient_medical_no, visit_type, reg_date, reg_period, department_code, doctor_name}</td>
     <td>{reg_number, department_name}</td>
   </tr>
 </table>
@@ -874,12 +876,13 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
   <tr><td>birthday</td><td>string</td><td>生日</td><td>""</td></tr>
   <tr><td>age</td><td>string</td><td>年齡</td><td>""</td></tr>
   <tr><td>phone</td><td>string</td><td>電話</td><td>""</td></tr>
-  <tr><td>cityId</td><td>string</td><td>縣市 ID</td><td>""</td></tr>
-  <tr><td>districtId</td><td>string</td><td>區域 ID</td><td>""</td></tr>
+  <tr><td>cityName</td><td>string</td><td>縣市名稱</td><td>""</td></tr>
+  <tr><td>districtName</td><td>string</td><td>區域名稱</td><td>""</td></tr>
   <tr><td>address</td><td>string</td><td>詳細地址</td><td>""</td></tr>
   <tr><td>regDate</td><td>string</td><td>掛號日期</td><td>當天日期</td></tr>
-  <tr><td>departmentId</td><td>string</td><td>科別 ID</td><td>""</td></tr>
-  <tr><td>doctorId</td><td>string</td><td>醫師 ID</td><td>""</td></tr>
+  <tr><td>regPeriod</td><td>string</td><td>掛號時段</td><td>""</td></tr>
+  <tr><td>departmentCode</td><td>string</td><td>科別代碼</td><td>""</td></tr>
+  <tr><td>doctorName</td><td>string</td><td>醫師姓名</td><td>""</td></tr>
   <tr><td>regNumber</td><td>string</td><td>掛號號碼</td><td>"--"</td></tr>
   <tr><td>regDeptName</td><td>string</td><td>掛號科別名稱</td><td>""</td></tr>
   <tr><td>cities</td><td>Option[]</td><td>縣市下拉選項</td><td>[]</td></tr>
@@ -889,7 +892,7 @@ P：主鍵（Primary Key）｜S：索引鍵（Index Key）｜FK：外鍵（Forei
 </table>
 
 <div class="footer">
-  安康綜合醫院 掛號系統 &nbsp;|&nbsp; 資料庫結構與 UX/UI 設計文件 &nbsp;|&nbsp; 114.3.17 製作
+  安康綜合醫院 掛號系統 &nbsp;|&nbsp; 資料庫結構與 UX/UI 設計文件 &nbsp;|&nbsp; 114.3.17 製作 &nbsp;|&nbsp; 115.3.31 修訂
 </div>
 
 </body>

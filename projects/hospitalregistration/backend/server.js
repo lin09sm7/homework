@@ -22,15 +22,27 @@ db.pragma("foreign_keys = ON");
 
 // GET /api/cities
 app.get("/api/cities", (req, res) => {
-  const cities = db.prepare("SELECT id, name FROM cities ORDER BY id").all();
+  const cities = db.prepare("SELECT name FROM cities ORDER BY rowid").all();
   res.json(cities);
 });
 
-// GET /api/cities/:cityId/districts
-app.get("/api/cities/:cityId/districts", (req, res) => {
+// GET /api/cities/:cityName/districts
+app.get("/api/cities/:cityName/districts", (req, res) => {
   const districts = db
-    .prepare("SELECT id, name FROM districts WHERE city_id = ? ORDER BY id")
-    .all(req.params.cityId);
+    .prepare("SELECT name FROM districts WHERE city_name = ? ORDER BY rowid")
+    .all(req.params.cityName);
+  res.json(districts);
+});
+
+// GET /api/districts  (list all)
+app.get("/api/districts", (_req, res) => {
+  const districts = db
+    .prepare(
+      `SELECT city_name, name
+       FROM districts
+       ORDER BY city_name, rowid`
+    )
+    .all();
   res.json(districts);
 });
 
@@ -41,16 +53,29 @@ app.get("/api/cities/:cityId/districts", (req, res) => {
 // GET /api/departments
 app.get("/api/departments", (req, res) => {
   const departments = db
-    .prepare("SELECT id, code, name FROM departments ORDER BY id")
+    .prepare("SELECT code, name FROM departments ORDER BY rowid")
     .all();
   res.json(departments);
 });
 
-// GET /api/departments/:deptId/doctors
-app.get("/api/departments/:deptId/doctors", (req, res) => {
+// GET /api/departments/:deptCode/doctors
+app.get("/api/departments/:deptCode/doctors", (req, res) => {
   const doctors = db
-    .prepare("SELECT id, name FROM doctors WHERE department_id = ? ORDER BY id")
-    .all(req.params.deptId);
+    .prepare("SELECT name FROM doctors WHERE department_code = ? ORDER BY rowid")
+    .all(req.params.deptCode);
+  res.json(doctors);
+});
+
+// GET /api/doctors  (list all, joined with department name)
+app.get("/api/doctors", (_req, res) => {
+  const doctors = db
+    .prepare(
+      `SELECT d.department_code, d.name, dep.name AS department_name
+       FROM doctors d
+       JOIN departments dep ON d.department_code = dep.code
+       ORDER BY dep.rowid, d.rowid`
+    )
+    .all();
   res.json(doctors);
 });
 
@@ -67,21 +92,19 @@ app.get("/api/patients", (req, res) => {
       .get(medical_no);
     return res.json(patient || null);
   }
-  const patients = db.prepare("SELECT * FROM patients ORDER BY id DESC").all();
+  const patients = db.prepare("SELECT * FROM patients ORDER BY created_at DESC").all();
   res.json(patients);
 });
 
 // POST /api/patients
 app.post("/api/patients", (req, res) => {
-  const { medical_no, name, gender, birthday, age, phone, city_id, district_id, address } = req.body;
+  const { medical_no, name, gender, birthday, age, phone, city_name, district_name, address } = req.body;
   try {
-    const result = db
-      .prepare(
-        `INSERT INTO patients (medical_no, name, gender, birthday, age, phone, city_id, district_id, address)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
-      )
-      .run(medical_no, name, gender || null, birthday || null, age || null, phone || null, city_id || null, district_id || null, address || null);
-    res.json({ id: result.lastInsertRowid });
+    db.prepare(
+      `INSERT INTO patients (medical_no, name, gender, birthday, age, phone, city_name, district_name, address)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).run(medical_no, name, gender || null, birthday || null, age || null, phone || null, city_name || null, district_name || null, address || null);
+    res.json({ medical_no });
   } catch (err) {
     if (err.message.includes("UNIQUE")) {
       return res.status(409).json({ error: "病歷號碼已存在" });
@@ -90,14 +113,14 @@ app.post("/api/patients", (req, res) => {
   }
 });
 
-// PUT /api/patients/:id
-app.put("/api/patients/:id", (req, res) => {
-  const { name, gender, birthday, age, phone, city_id, district_id, address } = req.body;
+// PUT /api/patients/:medicalNo
+app.put("/api/patients/:medicalNo", (req, res) => {
+  const { name, gender, birthday, age, phone, city_name, district_name, address } = req.body;
   try {
     db.prepare(
-      `UPDATE patients SET name=?, gender=?, birthday=?, age=?, phone=?, city_id=?, district_id=?, address=?, updated_at=datetime('now','localtime')
-       WHERE id=?`
-    ).run(name, gender || null, birthday || null, age || null, phone || null, city_id || null, district_id || null, address || null, req.params.id);
+      `UPDATE patients SET name=?, gender=?, birthday=?, age=?, phone=?, city_name=?, district_name=?, address=?, updated_at=datetime('now','localtime')
+       WHERE medical_no=?`
+    ).run(name, gender || null, birthday || null, age || null, phone || null, city_name || null, district_name || null, address || null, req.params.medicalNo);
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -110,23 +133,21 @@ app.put("/api/patients/:id", (req, res) => {
 
 // POST /api/registrations
 app.post("/api/registrations", (req, res) => {
-  const { patient_id, visit_type, reg_date, department_id, doctor_id } = req.body;
+  const { patient_medical_no, visit_type, reg_date, reg_period, department_code, doctor_name } = req.body;
 
-  // Auto-generate reg_number: count per department per date + 1
+  // Auto-generate reg_number: count per department per date per period + 1
   const count = db
-    .prepare("SELECT COUNT(*) as c FROM registrations WHERE reg_date = ? AND department_id = ?")
-    .get(reg_date, department_id);
+    .prepare("SELECT COUNT(*) as c FROM registrations WHERE reg_date = ? AND reg_period = ? AND department_code = ?")
+    .get(reg_date, reg_period, department_code);
   const reg_number = String((count?.c || 0) + 1).padStart(2, "0");
 
   try {
-    const result = db
-      .prepare(
-        `INSERT INTO registrations (reg_number, patient_id, visit_type, reg_date, department_id, doctor_id)
-         VALUES (?, ?, ?, ?, ?, ?)`
-      )
-      .run(reg_number, patient_id, visit_type, reg_date, department_id, doctor_id);
-    const dept = db.prepare("SELECT name FROM departments WHERE id = ?").get(department_id);
-    res.json({ id: result.lastInsertRowid, reg_number, department_name: dept?.name || "" });
+    db.prepare(
+      `INSERT INTO registrations (reg_date, reg_period, department_code, reg_number, patient_medical_no, visit_type, doctor_name)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`
+    ).run(reg_date, reg_period, department_code, reg_number, patient_medical_no, visit_type, doctor_name);
+    const dept = db.prepare("SELECT name FROM departments WHERE code = ?").get(department_code);
+    res.json({ reg_number, department_name: dept?.name || "" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -136,11 +157,10 @@ app.post("/api/registrations", (req, res) => {
 app.get("/api/registrations", (req, res) => {
   const rows = db
     .prepare(
-      `SELECT r.*, p.name as patient_name, p.medical_no, dep.name as dept_name, doc.name as doctor_name
+      `SELECT r.*, p.name as patient_name, p.medical_no, dep.name as dept_name
        FROM registrations r
-       JOIN patients p ON r.patient_id = p.id
-       JOIN departments dep ON r.department_id = dep.id
-       JOIN doctors doc ON r.doctor_id = doc.id
+       JOIN patients p ON r.patient_medical_no = p.medical_no
+       JOIN departments dep ON r.department_code = dep.code
        ORDER BY r.created_at DESC`
     )
     .all();

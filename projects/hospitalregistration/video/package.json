@@ -1,0 +1,25 @@
+{
+  "name": "video",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "preview": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts HospitalRegDemo ../docs/操作示範影片.mp4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@remotion/bundler": "^4.0.446",
+    "@remotion/cli": "^4.0.446",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "pptxgenjs": "^4.0.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "^4.0.446",
+    "typescript": "^6.0.2"
+  }
+}
